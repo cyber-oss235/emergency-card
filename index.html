@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Data-Axe ہنگامی کارڈ</title>
+    <title>Data-Axe Emergency Card</title>
 
     <!-- PWA Primary Meta Tags -->
     <meta name="theme-color" content="#0f172a">
@@ -48,6 +48,30 @@
             overflow-x: hidden;
         }
 
+        /* Top Expiry Alert Banner */
+        .expiry-alert-banner {
+            display: none;
+            background: linear-gradient(135deg, #ef4444, #991b1b);
+            color: white;
+            padding: 10px 15px;
+            border-radius: 12px;
+            font-size: 13px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 15px;
+            width: 100%;
+            max-width: 380px;
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.6);
+            animation: pulseWarning 1.2s infinite;
+            direction: ltr;
+        }
+
+        @keyframes pulseWarning {
+            0% { transform: scale(1); box-shadow: 0 0 15px rgba(239, 68, 68, 0.5); }
+            50% { transform: scale(1.02); box-shadow: 0 0 25px rgba(239, 68, 68, 0.8); }
+            100% { transform: scale(1); box-shadow: 0 0 15px rgba(239, 68, 68, 0.5); }
+        }
+
         /* Verification Status Banner */
         .verifying-banner {
             display: none;
@@ -71,28 +95,6 @@
             50% { opacity: 1; transform: scale(1); }
             100% { opacity: 0.8; transform: scale(0.98); }
         }
-
-        /* Floating Action Button for Admin */
-        .fab-admin {
-            position: fixed;
-            bottom: 20px;
-            left: 20px;
-            width: 55px;
-            height: 55px;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-            border: none;
-            border-radius: 50%;
-            font-size: 20px;
-            cursor: pointer;
-            box-shadow: 0 5px 20px rgba(99, 102, 241, 0.5);
-            z-index: 50;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            transition: transform 0.3s;
-        }
-        .fab-admin:active { transform: scale(0.9); }
 
         /* ID Card Container */
         .id-card {
@@ -213,12 +215,14 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            position: relative;
         }
 
         .avatar-container img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            object-position: center;
             border-radius: 10px;
             display: none;
         }
@@ -258,17 +262,13 @@
             text-transform: uppercase;
         }
 
-        /* Light OFF / Unverified State */
         .verify-badge.off {
             background: rgba(255, 255, 255, 0.05);
             border: 1px solid rgba(255, 255, 255, 0.1);
             color: #64748b;
         }
-        .verify-badge.off i {
-            color: #64748b;
-        }
+        .verify-badge.off i { color: #64748b; }
 
-        /* Light ON / Verified State */
         .verify-badge.on {
             background: rgba(56, 189, 248, 0.15);
             border: 1px solid rgba(56, 189, 248, 0.6);
@@ -318,19 +318,11 @@
             border-left: 3px solid var(--primary);
         }
 
-        .data-row.validity-row {
-            border-left: 3px solid #f59e0b;
-        }
-
         .data-row i {
             font-size: 16px;
             width: 25px;
             text-align: center;
             color: var(--primary);
-        }
-
-        .data-row.validity-row i {
-            color: #f59e0b;
         }
 
         .data-row .info {
@@ -351,6 +343,56 @@
             font-weight: 500;
             direction: ltr;
             text-align: right;
+        }
+
+        /* 3D Verification & Custom Expiry Box */
+        .seal-3d-card-box {
+            background: linear-gradient(145deg, rgba(30, 41, 59, 0.9), rgba(15, 23, 42, 0.95));
+            border: 1px solid rgba(56, 189, 248, 0.3);
+            border-radius: 20px;
+            padding: 16px 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6), inset 0 1px 1px rgba(255, 255, 255, 0.2);
+            position: relative;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            text-align: center;
+            overflow: hidden;
+            direction: ltr;
+        }
+
+        .seal-shield-icon {
+            width: 55px;
+            height: 55px;
+            margin: 0 auto 8px;
+            background: linear-gradient(135deg, #0284c7, #4338ca);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 24px;
+            color: #fff;
+            box-shadow: 0 8px 25px rgba(56, 189, 248, 0.5), inset 0 2px 4px rgba(255, 255, 255, 0.4);
+        }
+
+        .seal-title {
+            font-size: 13px;
+            font-weight: 800;
+            color: #38bdf8;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+        }
+
+        .expiry-date-pill {
+            display: inline-block;
+            background: rgba(244, 63, 94, 0.15);
+            border: 1px solid rgba(244, 63, 94, 0.4);
+            color: #fda4af;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 700;
         }
 
         /* Action Buttons */
@@ -429,122 +471,54 @@
             flex-direction: column;
             align-items: center;
             gap: 4px;
-            transition: all 0.2s ease;
         }
 
-        .sd-btn:active {
-            transform: scale(0.92);
-            background: rgba(239, 68, 68, 0.3);
-        }
+        .sd-btn i { font-size: 15px; color: #f43f5e; }
+        .sd-btn .sd-num { font-size: 13px; font-weight: 800; color: #fff; letter-spacing: 0.5px; }
+        .sd-btn .sd-label { font-size: 9px; color: #cbd5e1; font-weight: 500; }
 
-        .sd-btn i {
-            font-size: 15px;
-            color: #f43f5e;
-        }
-
-        .sd-btn .sd-num {
-            font-size: 13px;
-            font-weight: 800;
-            color: #fff;
-            letter-spacing: 0.5px;
-        }
-
-        .sd-btn .sd-label {
-            font-size: 9px;
-            color: #cbd5e1;
-            font-weight: 500;
-        }
-
-        /* Urdu Info Boxes */
-        .urdu-box {
+        /* Bilingual Info Boxes */
+        .bilingual-box {
             background: rgba(251, 191, 36, 0.1);
             border: 1px solid rgba(251, 191, 36, 0.3);
             border-radius: 15px;
-            padding: 20px;
-            font-family: 'Noto Nastaliq Urdu', serif;
-            text-align: right;
-            margin-bottom: 15px;
-        }
-
-        .urdu-box.teal-box {
-            background: rgba(20, 184, 166, 0.1);
-            border: 1px solid rgba(20, 184, 166, 0.3);
-            margin-bottom: 15px;
-        }
-
-        .urdu-box.rose-box {
-            background: rgba(244, 63, 94, 0.1);
-            border: 1px solid rgba(244, 63, 94, 0.3);
-            margin-bottom: 15px;
-        }
-
-        .urdu-box.purple-box {
-            background: rgba(168, 85, 247, 0.1);
-            border: 1px solid rgba(168, 85, 247, 0.3);
-            margin-bottom: 15px;
-        }
-
-        .urdu-box h3 {
-            color: #fbbf24;
-            font-size: 18px;
+            padding: 15px;
             margin-bottom: 12px;
-            text-align: center;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
+            text-align: left;
+            direction: ltr;
         }
+        .bilingual-box.teal-box { background: rgba(20, 184, 166, 0.1); border: 1px solid rgba(20, 184, 166, 0.3); }
 
-        .urdu-box.teal-box h3 { color: #2dd4bf; }
-        .urdu-box.rose-box h3 { color: #fda4af; }
-        .urdu-box.purple-box h3 { color: #c084fc; }
-
-        .urdu-box p {
-            color: #fde68a;
-            font-size: 13px;
-            line-height: 2.4;
-            margin-bottom: 8px;
-        }
-
-        .urdu-box.teal-box p { color: #99f6e4; }
-        .urdu-box.rose-box p { color: #fecdd3; }
-        .urdu-box.purple-box p { color: #e9d5ff; }
-
-        .urdu-box strong { color: #fff; }
-
-        /* Highlight Privacy Policy Button */
-        .privacy-btn-container {
-            margin-bottom: 15px;
-            text-align: center;
-        }
-
-        .privacy-highlight-btn {
-            width: 100%;
-            background: linear-gradient(135deg, #f43f5e, #8b5cf6);
-            border: none;
-            border-radius: 15px;
-            padding: 14px 20px;
-            color: white;
-            font-family: 'Poppins', sans-serif;
+        .bilingual-box h3 {
+            color: #fbbf24;
             font-size: 14px;
-            font-weight: 700;
-            cursor: pointer;
-            box-shadow: 0 0 20px rgba(244, 63, 94, 0.4);
+            margin-bottom: 8px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 10px;
-            transition: all 0.3s ease;
-            animation: pulseGlow 2s infinite;
+            gap: 8px;
+            font-weight: 700;
+        }
+        .bilingual-box.teal-box h3 { color: #2dd4bf; }
+
+        .section-eng {
+            font-size: 11px;
+            color: #f8fafc;
+            line-height: 1.5;
+            margin-bottom: 8px;
+            padding-bottom: 8px;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.15);
         }
 
-        @keyframes pulseGlow {
-            0% { box-shadow: 0 0 15px rgba(244, 63, 94, 0.4); }
-            50% { box-shadow: 0 0 25px rgba(99, 102, 241, 0.7); }
-            100% { box-shadow: 0 0 15px rgba(244, 63, 94, 0.4); }
+        .section-urdu {
+            font-family: 'Noto Nastaliq Urdu', serif;
+            font-size: 11px;
+            color: #fde68a;
+            line-height: 2;
+            direction: rtl;
+            text-align: right;
         }
 
-        /* Powered By Section */
+        /* Powered By & Bottom Action Buttons Integration */
         .powered-by {
             text-align: center;
             margin-top: 15px;
@@ -552,12 +526,7 @@
             border-top: 1px solid var(--glass-border);
             direction: ltr;
         }
-        .powered-by span {
-            font-size: 10px;
-            color: var(--text-dim);
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
+        .powered-by span { font-size: 10px; color: var(--text-dim); letter-spacing: 2px; text-transform: uppercase; }
         .powered-by strong {
             font-size: 12px;
             background: linear-gradient(to right, var(--primary), var(--accent));
@@ -567,17 +536,44 @@
             letter-spacing: 1px;
         }
 
+        .bottom-buttons-wrapper {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 12px;
+            flex-wrap: wrap;
+        }
+
+        .btn-inline {
+            display: inline-flex;
+            align-items: center;
+            gap: 4px;
+            padding: 7px 10px;
+            border-radius: 18px;
+            font-size: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 1px solid transparent;
+        }
+        .btn-inline:hover { color: white; }
+
+        .admin-btn { background: rgba(99, 102, 241, 0.2); border-color: rgba(99, 102, 241, 0.5); color: #a5b4fc; }
+        .benefits-btn { background: rgba(20, 184, 166, 0.2); border-color: rgba(20, 184, 166, 0.5); color: #99f6e4; }
+        .renew-btn { background: rgba(37, 211, 102, 0.2); border-color: rgba(37, 211, 102, 0.5); color: #86efac; }
+        .privacy-btn { background: rgba(244, 63, 94, 0.2); border-color: rgba(244, 63, 94, 0.5); color: #fda4af; }
+
         /* Modal System */
         .modal-bg {
             display: none;
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0,0,0,0.85);
             backdrop-filter: blur(5px);
             z-index: 100;
             justify-content: center;
             align-items: center;
-            padding: 20px;
+            padding: 15px;
         }
         .modal-bg.active { display: flex; }
 
@@ -608,26 +604,26 @@
             flex-shrink: 0;
         }
 
-        .modal-head h2 { font-size: 16px; font-weight: 600; }
+        .modal-head h2 { font-size: 15px; font-weight: 600; color: #fff; }
         .modal-close { background: none; border: none; color: white; font-size: 20px; cursor: pointer; }
 
         .modal-body {
-            padding: 20px;
+            padding: 18px;
             overflow-y: auto;
             flex-grow: 1;
         }
 
-        .form-float { margin-bottom: 15px; }
+        .form-float { margin-bottom: 12px; }
         .form-float label {
             display: block;
-            font-size: 11px;
+            font-size: 10px;
             color: var(--text-dim);
-            margin-bottom: 5px;
+            margin-bottom: 4px;
             text-transform: uppercase;
         }
         .form-float input {
             width: 100%;
-            padding: 12px;
+            padding: 10px;
             background: #0f172a;
             border: 1px solid #334155;
             border-radius: 10px;
@@ -638,92 +634,183 @@
         }
         .form-float input:focus { outline: none; border-color: var(--primary); }
 
-        .upload-area {
-            display: flex; align-items: center; gap: 15px; margin-bottom: 20px;
-        }
+        .upload-area { display: flex; align-items: center; gap: 15px; margin-bottom: 15px; }
         .upload-preview {
-            width: 60px; height: 70px; border-radius: 10px; background: #0f172a; border: 1px dashed #334155; display: flex; justify-content: center; align-items: center; overflow: hidden;
+            width: 60px; height: 70px; border-radius: 10px; background: #0f172a; border: 1px dashed #334155; display: flex; justify-content: center; align-items: center; overflow: hidden; position: relative;
         }
-        .upload-preview img { width: 100%; height: 100%; object-fit: cover; display: none; }
-        .upload-btn { 
-            padding: 10px 15px; background: var(--primary); border: none; color: white; border-radius: 8px; cursor: pointer; font-family: 'Poppins'; font-size: 12px;
-        }
+        .upload-preview img { width: 100%; height: 100%; object-fit: cover; object-position: center; display: none; }
+        .upload-btn { padding: 8px 12px; background: var(--primary); border: none; color: white; border-radius: 8px; cursor: pointer; font-size: 11px; }
 
         .save-btn {
-            width: 100%; padding: 14px; background: linear-gradient(to right, var(--accent), #be123c); border: none; color: white; border-radius: 12px; font-size: 16px; font-weight: 600; cursor: pointer; font-family: 'Poppins'; margin-top: 10px; flex-shrink: 0;
+            width: 100%; padding: 12px; background: linear-gradient(to right, var(--accent), #be123c); border: none; color: white; border-radius: 12px; font-size: 15px; font-weight: 600; cursor: pointer; margin-top: 10px; flex-shrink: 0;
         }
 
-        .pass-form { text-align: center; }
-        .pass-form input { width: 100%; padding: 15px; background: #0f172a; border: 1px solid #334155; border-radius: 12px; color: white; text-align: center; font-size: 20px; letter-spacing: 8px; margin: 20px 0; font-family: 'Poppins'; }
-        .pass-form button { background: var(--primary); color: white; padding: 12px 30px; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; font-family: 'Poppins'; width: 100%; }
-        .pass-error { color: var(--accent); font-size: 12px; margin-top: 10px; display: none; }
-
-        /* Privacy Policy Modal Styling */
-        .policy-content-eng {
-            direction: ltr;
-            text-align: left;
-            font-size: 13px;
-            line-height: 1.6;
-            color: #cbd5e1;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+        /* Cropper Tool Container Styles */
+        .cropper-container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
         }
-        .policy-content-eng h4 {
-            color: #f43f5e;
-            margin-bottom: 8px;
-            font-size: 14px;
+        .crop-viewport {
+            width: 210px;
+            height: 260px;
+            border: 3px dashed var(--verified-blue);
+            border-radius: 15px;
+            overflow: hidden;
+            background: #000;
+            position: relative;
+            cursor: grab;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
         }
-        .policy-content-urdu {
-            direction: rtl;
-            text-align: right;
-            font-family: 'Noto Nastaliq Urdu', serif;
-            font-size: 12px;
-            line-height: 2.2;
-            color: #fde68a;
-            margin-bottom: 20px;
-            padding-bottom: 15px;
-            border-bottom: 1px solid rgba(255,255,255,0.1);
+        .crop-viewport:active { cursor: grabbing; }
+        .crop-viewport img {
+            position: absolute;
+            transform-origin: center;
+            user-select: none;
+            pointer-events: none;
         }
-        .policy-content-urdu h4 {
-            color: #fbbf24;
-            margin-bottom: 8px;
-            font-size: 14px;
+        .crop-controls {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
         }
-
-        .contact-info-block {
-            background: rgba(15, 23, 42, 0.6);
-            border: 1px solid var(--glass-border);
-            border-radius: 12px;
-            padding: 12px;
-            margin-top: 10px;
-        }
-        .contact-info-block h5 {
-            color: #2dd4bf;
-            font-size: 13px;
-            margin-bottom: 8px;
-        }
-        .contact-info-block p {
-            font-size: 12px;
-            color: #f8fafc;
-            margin-bottom: 5px;
-            direction: ltr;
-            text-align: left;
+        .crop-slider-row {
             display: flex;
             align-items: center;
+            gap: 10px;
+            font-size: 11px;
+            color: var(--text-dim);
+        }
+        .crop-slider-row input[type="range"] {
+            flex: 1;
+            accent-color: var(--primary);
+        }
+        .crop-action-btns {
+            display: flex;
+            gap: 10px;
+        }
+        .crop-btn {
+            flex: 1;
+            padding: 10px;
+            border-radius: 10px;
+            border: none;
+            font-weight: 600;
+            font-size: 13px;
+            cursor: pointer;
+        }
+        .crop-btn.cancel { background: #334155; color: #fff; }
+        .crop-btn.apply { background: #22c55e; color: #fff; }
+
+        /* Fixed LTR Password Input */
+        .pass-form { text-align: center; direction: ltr; }
+        .pass-form p { direction: rtl; }
+        .pass-form input { 
+            width: 100%; 
+            padding: 15px; 
+            background: #0f172a; 
+            border: 1px solid #334155; 
+            border-radius: 12px; 
+            color: white; 
+            text-align: center; 
+            font-size: 20px; 
+            letter-spacing: 8px; 
+            margin: 20px 0; 
+            font-family: 'Poppins', sans-serif; 
+            direction: ltr !important; 
+            unicode-bidi: bidi-override;
+        }
+        .pass-form button { background: var(--primary); color: white; padding: 12px 30px; border: none; border-radius: 10px; font-weight: 600; cursor: pointer; width: 100%; }
+        .pass-error { color: var(--accent); font-size: 12px; margin-top: 10px; display: none; direction: rtl; }
+
+        /* Session Lock Overlay (Triggers after 3 Minutes) */
+        .session-lock-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: #0f172a;
+            z-index: 999;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            text-align: center;
+        }
+        .session-lock-overlay.active { display: flex; }
+        .lock-card-icon {
+            width: 80px;
+            height: 80px;
+            background: rgba(239, 68, 68, 0.15);
+            border: 2px solid rgba(239, 68, 68, 0.4);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 32px;
+            color: #ef4444;
+            margin-bottom: 20px;
+            box-shadow: 0 0 30px rgba(239, 68, 68, 0.3);
+            animation: pulseWarning 1.5s infinite;
+        }
+        .session-lock-overlay h2 { font-size: 20px; font-weight: 700; margin-bottom: 10px; color: #fff; }
+        .session-lock-overlay p { font-size: 13px; color: var(--text-dim); margin-bottom: 25px; max-width: 300px; line-height: 1.6; }
+        .scan-again-btn {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 14px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(99, 102, 241, 0.4);
+        }
+
+        /* Privacy Policy Styles */
+        .policy-content-eng { direction: ltr; text-align: left; font-size: 12px; line-height: 1.6; color: #cbd5e1; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .policy-content-eng h4 { color: #f43f5e; margin-bottom: 6px; font-size: 13px; }
+        .policy-content-urdu { direction: rtl; text-align: right; font-family: 'Noto Nastaliq Urdu', serif; font-size: 11px; line-height: 2; color: #fde68a; margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+        .policy-content-urdu h4 { color: #fbbf24; margin-bottom: 6px; font-size: 13px; }
+
+        .contact-info-block { background: rgba(15, 23, 42, 0.6); border: 1px solid var(--glass-border); border-radius: 12px; padding: 10px; margin-top: 10px; }
+        .contact-info-block h5 { color: #2dd4bf; font-size: 12px; margin-bottom: 6px; }
+        .contact-info-block p { font-size: 11px; color: #f8fafc; margin-bottom: 4px; direction: ltr; text-align: left; display: flex; align-items: center; gap: 8px; }
+        .contact-info-block p i { color: var(--primary); width: 16px; }
+        .contact-info-block p a { color: #a5b4fc; text-decoration: none; }
+
+        /* QR Purpose Checklist Styles */
+        .qr-purpose-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .qr-purpose-list li {
+            display: flex;
+            align-items: flex-start;
             gap: 8px;
+            margin-bottom: 10px;
+            font-size: 11px;
+            color: #e2e8f0;
+            line-height: 1.5;
         }
-        .contact-info-block p i {
-            color: var(--primary);
-            width: 16px;
+        .qr-purpose-list li i {
+            color: #22c55e;
+            font-size: 13px;
+            margin-top: 2px;
+            flex-shrink: 0;
         }
-        .contact-info-block p a {
-            color: #a5b4fc;
-            text-decoration: none;
+        .qr-purpose-list li span strong {
+            color: #38bdf8;
         }
     </style>
 </head>
 <body>
+
+    <!-- Top Expiry Alert Banner -->
+    <div class="expiry-alert-banner" id="expiryAlertBanner">
+        <i class="fas fa-triangle-exclamation" style="margin-right: 6px;"></i> Alert: Your card is expiring soon! Please renew your card.
+    </div>
 
     <!-- Verifying Loader Banner -->
     <div class="verifying-banner" id="verifyingBanner">
@@ -743,7 +830,7 @@
             <div class="school-info">
                 <h1>Emergency Profile</h1>
             </div>
-            <div class="serial-chip" data-field="serialNo">SN-0000</div>
+            <div class="serial-chip" data-field="serialNo">DAX-8821-BS</div>
         </div>
 
         <div class="card-content">
@@ -799,13 +886,17 @@
                         <strong data-field="schoolNo">0000-****</strong>
                     </div>
                 </div>
-                <!-- Expiration Date / Valid Till Indicator -->
-                <div class="data-row validity-row">
-                    <i class="fas fa-calendar-check"></i>
-                    <div class="info">
-                        <span>Valid Till / Expiration Date</span>
-                        <strong data-field="validTill">December 2026</strong>
-                    </div>
+            </div>
+
+            <!-- 3D Verification & Custom Expiry Box -->
+            <div class="seal-3d-card-box">
+                <div class="seal-shield-icon">
+                    <i class="fas fa-shield-halved"></i>
+                </div>
+                <div class="seal-title">DATA-AXE OFFICIAL VERIFIED</div>
+                
+                <div class="expiry-date-pill">
+                    <i class="fas fa-calendar-days" style="margin-right: 5px;"></i> Expiry: <span data-field="expiryDateDisplay">2026-12-31</span>
                 </div>
             </div>
 
@@ -849,69 +940,42 @@
                 </div>
             </div>
 
-            <!-- 1. Choking / Heimlich Maneuver Guide -->
-            <div class="urdu-box">
-                <h3><i class="fas fa-person-dots-from-line"></i> گلا گھٹنے پر فوری امداد (Choking)</h3>
-                <p><strong>1. مریض کے پیچھے کھڑے ہوں:</strong> متاثرہ شخص کی کمر کے پیچھے جائیں اور اپنے ہاتھ اس کے پیٹ کے گرد لپیٹیں۔</p>
-                <p><strong>2. مٹھی بنائیں (Heimlich Maneuver):</strong> اپنی ایک مٹھی بنائیں اور اسے ناف (Navel) سے ذرا اوپر رکھیں۔</p>
-                <p><strong>3. اندر اور اوپر زور دیں (Abdominal Thrusts):</strong> مٹھی کو دوسرے ہاتھ سے پکڑ کر تیزی سے اندر اور اوپر کی طرف جھٹکا دیں۔ ایسا تب تک کریں جب تک پھنسی ہوئی شے باہر نہ نکل آئے۔</p>
-            </div>
-
-            <!-- 2. Bleeding Control Guide -->
-            <div class="urdu-box rose-box">
-                <h3><i class="fas fa-bandage"></i> شدید خون بہنے کی صورت میں امداد</h3>
-                <p><strong>1. براہِ راست دباؤ (Direct Pressure):</strong> زخم کے اوپر صاف کپڑا یا گوز (Gauze) رکھ کر ہاتھوں سے مضبوطی سے دبائیں۔</p>
-                <p><strong>2. زخم کو اوپر اٹھائیں (Elevate):</strong> اگر ممکن ہو اور ہڈی نہ ٹوٹی ہو تو متاثرہ عضو کو دل کی سطح سے اوپر رکھیں۔</p>
-                <p><strong>3. پٹی باندھیں (Pressure Bandage):</strong> کپڑے کو ہٹائے بغیر اس کے اوپر مضبوطی سے پٹی باندھیں اور فوراً طبی امداد (1122) طلب کریں۔</p>
-            </div>
-
-            <!-- 3. Burn & Shock Management -->
-            <div class="urdu-box purple-box">
-                <h3><i class="fas fa-fire-extinguisher"></i> جلنے اور برقی جھٹکے پر فوری اقدامات</h3>
-                <p><strong>آگ سے جلنے پر:</strong> جلنے والی جگہ پر فوری طور پر 10 سے 15 منٹ تک ٹھنڈا (بہتا ہوا) پانی ڈالیں۔ برف، ٹوتھ پیسٹ یا مکھن کا استعمال ہرگز نہ کریں۔</p>
-                <p><strong>الیکٹرک شاک (Electric Shock):</strong> متاثرہ شخص کو چھونے سے پہلے مین سوئچ سے بجلی کا کنکشن کاٹیں۔ خشک لکڑی یا پلاسٹک کی مدد سے اسے تار سے الگ کریں۔</p>
-                <p><strong>شاک (Shock) سنبھالنا:</strong> مریض کو سیدھا لٹا دیں، اس کی ٹانگیں تھوڑی اوپر اٹھائیں اور اسے گرم چادر سے ڈھانپ دیں۔</p>
-            </div>
-
-            <!-- Card Usage Instructions -->
-            <div class="urdu-box">
-                <h3>ہنگامی کارڈ کے استعمال کا طریقہ</h3>
-                <p><strong>ہر شخص کی حفاظت کے لیے:</strong> یہ کارڈ کسی بھی ہنگامی صورتحال، سفر یا حادثے کے دوران فوری شناخت اور مدد کا ضامن ہے۔</p>
-                <p><strong>سیریل نمبر کا مقصد:</strong> اس کارڈ کا Serial Number محفوظ ڈیجیٹل سسٹم (Data-Axe) سے جڑا ہوا ہے۔ کسی بھی ہنگامی ضرورت کے وقت اس نمبر سے اہم معلومات حاصل کی جا سکتی ہیں۔</p>
-                <p><strong>صارف کے لیے نوٹ:</strong> اگر آپ کا فون نمبر یا گھر کا پتہ تبدیل ہو جائے، تو اس سسٹم میں ریکارڈ فوراً اپ ڈیٹ کر لیں تاکہ بوقتِ ضرورت پریشانی نہ ہو۔</p>
-                <p><strong>حفاظت:</strong> یہ کارڈ یا اس کا لنک آپ کے پاس ہر وقت محفوظ ہونا چاہیے۔</p>
-            </div>
-
-            <!-- Usage & Benefits Box -->
-            <div class="urdu-box teal-box">
-                <h3>مقاصد اور فوائد</h3>
-                <p><strong>ایکسیڈنٹ یا ایمرجنسی:</strong> کسی بھی حادثے یا ناگہانی صورتحال میں، ریسکیو ٹیم یا کوئی بھی فرد اس کارڈ کی مدد سے فوری شناخت کر سکتا ہے اور آپ کے پیاروں کو کال یا واٹس ایپ پر مطلع کر سکتا ہے۔</p>
-                <p><strong>فوری ریسکیو ڈائل (1122 / 15):</strong> ہنگامی صورتحال میں بغیر نمبر ٹائپ کیے ایک کلک پر براہِ راست ریسکیو 1122 یا پولیس کو کال ملائی جا سکتی ہے۔</p>
-                <p><strong>بلڈ گروپ کی فوری دستیابی:</strong> اگر خون کی فوری ضرورت پڑ جائے، تو اس کارڈ سے بلڈ گروپ کا فوراً پتہ چل جائے گا، جس سے قیمتی جان بچائی جا سکتی ہے۔</p>
-                <p><strong>گمشدگی کی صورت میں:</strong> اگر کوئی شخص کسی بھی وجہ سے مشکل میں پھنس جائے یا راستہ بھول جائے، تو اس کی مدد کرنا آسان ہو جاتا ہے۔</p>
-                <p><strong>لوکیشن شیئرنگ:</strong> لوکیشن والے بٹن سے آپ کی موجودہ جگہ کا نقشہ (Google Map) براہ راست ایمرجنسی نمبر پر بھیج دیا جاتا ہے۔</p>
-            </div>
-
-            <!-- Privacy Policy Highlight Button -->
-            <div class="privacy-btn-container">
-                <button class="privacy-highlight-btn" onclick="openPrivacyModal()">
-                    <i class="fas fa-shield-alt"></i> Privacy Policy & Data Security
-                </button>
-            </div>
-
-            <!-- Powered By -->
+            <!-- Powered By & Bottom Buttons Integration -->
             <div class="powered-by">
                 <span>Powered By</span><br>
-                <strong><i class="fas fa-database" style="margin-right: 3px;"></i> Data-Axe</strong>
+                <strong><i class="fas fa-database" style="margin-right: 3px;"></i> Data-Axe</strong><br>
+                
+                <div class="bottom-buttons-wrapper">
+                    <button class="btn-inline admin-btn" onclick="handleAdmin()">
+                        <i class="fas fa-pen-to-square"></i> Edit Card
+                    </button>
+
+                    <button class="btn-inline privacy-btn" onclick="openPrivacyModal()">
+                        <i class="fas fa-shield-alt"></i> Privacy Policy
+                    </button>
+
+                    <button class="btn-inline benefits-btn" onclick="openBenefitsModal()">
+                        <i class="fas fa-shield-heart"></i> Card Benefits
+                    </button>
+
+                    <button class="btn-inline renew-btn" onclick="sendRenewalRequest()">
+                        <i class="fab fa-whatsapp"></i> Renew Card
+                    </button>
+                </div>
             </div>
 
         </div>
     </div>
 
-    <!-- Admin FAB -->
-    <button class="fab-admin" id="fabBtn" onclick="handleAdmin()">
-        <i class="fas fa-lock"></i>
-    </button>
+    <!-- Session Lock Overlay (Triggers after 3 Minutes) -->
+    <div class="session-lock-overlay" id="sessionLockOverlay">
+        <div class="lock-card-icon">
+            <i class="fas fa-lock"></i>
+        </div>
+        <h2>Session Expired / سیشن ختم ہو گیا</h2>
+        <p>سیکیورٹی کی وجہ سے کارڈ لاک کر دیا گیا ہے۔ کارڈ دیکھنے یا دوبارہ رسائی کے لیے QR کوڈ کو دوبارہ اسکین کریں۔</p>
+        <button class="scan-again-btn" onclick="location.reload()"><i class="fas fa-qrcode" style="margin-right: 6px;"></i> Scan QR Again / دوبارہ اسکین کریں</button>
+    </div>
 
     <!-- Admin Login Modal -->
     <div class="modal-bg" id="loginModal">
@@ -921,7 +985,7 @@
                 <button class="modal-close" onclick="closeModals()"><i class="fas fa-xmark"></i></button>
             </div>
             <div class="modal-body pass-form">
-                <p style="font-size: 12px; color: #94a3b8;">ترمیم کرنے کے لیے پاسورڈ درج کریں</p>
+                <p style="font-size: 12px; color: #94a3b8; margin-bottom: 5px;">ترمیم کرنے کے لیے پاسورڈ درج کریں</p>
                 <input type="password" id="adminPass" maxlength="4" placeholder="••••">
                 <button onclick="verifyAdmin()">Login</button>
                 <div class="pass-error" id="loginError">غلط پاسورڈ!</div>
@@ -944,16 +1008,16 @@
                         <i class="fas fa-image" id="previewPlaceholder" style="color: #334155; font-size: 20px;"></i>
                     </div>
                     <input type="file" id="photoInput" accept="image/*" style="display:none;">
-                    <button class="upload-btn" onclick="document.getElementById('photoInput').click()"><i class="fas fa-camera"></i> Photo</button>
+                    <button class="upload-btn" onclick="document.getElementById('photoInput').click()"><i class="fas fa-camera"></i> Change Photo</button>
                 </div>
 
                 <div class="form-float">
-                    <label>Company / Organization Name</label>
+                    <label>Company / School / College Name</label>
                     <input type="text" id="inputCompanyName" placeholder="e.g. Data-Axe Solutions">
                 </div>
                 <div class="form-float">
                     <label>Serial Number (Data-Axe)</label>
-                    <input type="text" id="inputSerialNo" placeholder="SN-1234">
+                    <input type="text" id="inputSerialNo" placeholder="DAX-8821-BS">
                 </div>
                 <div class="form-float">
                     <label>Full Name</label>
@@ -980,11 +1044,112 @@
                     <input type="tel" id="inputSchoolNo" placeholder="042-*******">
                 </div>
                 <div class="form-float">
-                    <label>Valid Till / Expiration Date</label>
-                    <input type="text" id="inputValidTill" placeholder="e.g. December 2026">
+                    <label>Card Expiry Date (YYYY-MM-DD)</label>
+                    <input type="date" id="inputExpiryDate">
                 </div>
 
                 <button class="save-btn" onclick="saveData()"><i class="fas fa-floppy-disk"></i> Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Interactive Crop Modal -->
+    <div class="modal-bg" id="cropModal">
+        <div class="modal-box" style="max-width: 340px;">
+            <div class="modal-head">
+                <h2><i class="fas fa-crop"></i> Adjust & Crop Face</h2>
+                <button class="modal-close" onclick="closeCropModal()"><i class="fas fa-xmark"></i></button>
+            </div>
+            <div class="modal-body cropper-container">
+                <p style="font-size: 11px; color: var(--text-dim); text-align: center;">تصویر کو کھینچ کر یا زوم کرکے چہرہ فریم میں سیٹ کریں</p>
+                
+                <div class="crop-viewport" id="cropViewport">
+                    <img id="cropImage" src="" alt="Crop Source">
+                </div>
+
+                <div class="crop-controls">
+                    <div class="crop-slider-row">
+                        <span>Zoom:</span>
+                        <input type="range" id="zoomRange" min="1" max="3" step="0.05" value="1">
+                    </div>
+                    <div class="crop-action-btns">
+                        <button class="crop-btn cancel" onclick="closeCropModal()">Cancel</button>
+                        <button class="crop-btn apply" onclick="applyCrop()"><i class="fas fa-check"></i> Crop & Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Card Benefits & QR Purpose Modal -->
+    <div class="modal-bg" id="benefitsModal">
+        <div class="modal-box">
+            <div class="modal-head">
+                <h2><i class="fas fa-shield-heart"></i> Card Benefits & Uses</h2>
+                <button class="modal-close" onclick="closeModals()"><i class="fas fa-xmark"></i></button>
+            </div>
+            <div class="modal-body">
+                <div class="bilingual-box teal-box">
+                    <h3><i class="fas fa-qrcode"></i> Emergency QR - 10 Major Uses</h3>
+                    <ul class="qr-purpose-list">
+                        <li>
+                            <i class="fas fa-circle-check"></i>
+                            <span><strong>Children & Students (بچوں اور اسٹوڈنٹس کے لیے):</strong> Useful if a child gets lost or faces any trouble outside. / اگر بچہ اسکول یا باہر کہیں گم ہو جائے یا مسئلہ بن جائے۔</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-circle-check"></i>
+                            <span><strong>Every Citizen / Commuters (عام شہریوں کے لیے):</strong> Essential during bike/car accidents, sudden unconsciousness, or heart attacks. / سفر کے دوران ایکسیڈنٹ، بے ہوشی یا دل کا دورہ پڑنے پر۔</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-circle-check"></i>
+                            <span><strong>Senior Citizens (بزرگوں کے لیے):</strong> Specially helpful for elderly people with memory loss (dementia). / جن بزرگوں کی یادداشت کمزور ہوتی ہے اور وہ راستہ بھول جاتے ہیں۔</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-circle-check"></i>
+                            <span><strong>Buses & Transport (بسوں کے لیے):</strong> Vital during road emergencies for quick family notification. / بسوں میں سفر کے دوران ہنگامی یا حادثاتی صورتحال میں فوری رابطہ۔</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-circle-check"></i>
+                            <span><strong>Travel Bags & Vehicles (بیگز اور پرس کے لیے):</strong> Card or sticker on travel bags ensures instant identification and rescue contact. / ٹریول بیگز، پرس یا گاڑیوں پر کارڈ/اسٹیکر کا ہونا ضروری ہے۔</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-circle-check"></i>
+                            <span><strong>Industrial & Factory Workers (فیکٹری اور انڈسٹری ورکرز):</strong> Quick identification and immediate blood group access during heavy machinery accidents on shop floors. / فیکٹریوں میں کام کے دوران حادثے کی صورت میں فوری شناخت اور بلڈ گروپ کی دستیابی۔</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-circle-check"></i>
+                            <span><strong>Delivery Riders & Drivers (ڈیلیوری رائیڈرز اور ڈرائیورز):</strong> Crucial for food/courier riders constantly on roads facing traffic hazards and remote breakdowns. / سارا دن سڑکوں پر رہنے والے بائیک رائیڈرز اور ڈرائیورز کے لیے حفاظتی ڈھال۔</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-circle-check"></i>
+                            <span><strong>Gym & Fitness Members (جیم اور فٹنس ممبرز):</strong> Instant medical alert for heavy weightlifters or athletes experiencing sudden exhaustion or cardiac stress. / جیم یا ورزش کے دوران سانس کی تنگی یا کارڈیک اسٹریس پر فوری طبی امداد کی سہولت۔</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-circle-check"></i>
+                            <span><strong>Corporate Employees & Field Staff (کارپوریٹ فیلڈ اسٹاف):</strong> Professional digital ID solution for employees visiting client sites or traveling inter-city. / دوسرے شہروں یا فیلڈ وزٹ پر جانے والے ملازمین کے لیے پروفیشنل ڈیجیٹل شناخت۔</span>
+                        </li>
+                        <li>
+                            <i class="fas fa-circle-check"></i>
+                            <span><strong>Patients with Chronic Illnesses (دائمی مریض):</strong> Immediate display of emergency contact and emergency response numbers for patients with severe medical conditions. / دائمی بیماریوں میں مبتلا افراد کے لیے ہنگامی حالات میں فیملی تک رسائی کا تیز ترین ذریعہ۔</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="bilingual-box teal-box" style="margin-bottom:0;">
+                    <h3>Purposes & Key Benefits / مقاصد اور فوائد</h3>
+                    <div class="section-eng">
+                        <strong>Accidents & Rescue:</strong> Enables instant rescue team contact with loved ones.<br>
+                        <strong>Speed Helpline:</strong> One-click calling to 1122, 15, and 130.<br>
+                        <strong>Blood Group:</strong> Crucial medical info available immediately.<br>
+                        <strong>Live Location:</strong> Instant Google Maps link sharing via WhatsApp.
+                    </div>
+                    <div class="section-urdu">
+                        <strong>ایکسیڈنٹ یا ایمرجنسی:</strong> ریسکیو ٹیم یا کوئی بھی فرد کارڈ سے پیاروں کو مطلع کر سکتا ہے۔<br>
+                        <strong>فوری ڈائل:</strong> ایک کلک پر ریسکیو 1122، 15، یا 130 کو کال۔<br>
+                        <strong>بلڈ گروپ:</strong> خون کی فوری ضرورت پر جان بچانے میں مددگار۔<br>
+                        <strong>لوکیشن شیئرنگ:</strong> گوگل میپ کا نقشہ فوری ایمرجنسی نمبر پر ارسال۔
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -1006,7 +1171,6 @@
                     <p><strong>ڈیٹا رازداری کی ضمانت:</strong> Data-Axe پر آپ کی ذاتی معلومات، بلڈ گروپ اور ہنگامی رابطے مکمل طور پر محفوظ ہیں۔ آپ کا ڈیٹا کسی بھی تیسری پارٹی کو بیچا یا منتقل نہیں کیا جاتا۔</p>
                 </div>
 
-                <!-- For More Info Section -->
                 <div class="contact-info-block">
                     <h5>For More Info / مزید معلومات کے لیے:</h5>
                     <p><i class="fas fa-globe"></i> <a href="http://www.dataaxe.info" target="_blank">www.dataaxe.info</a></p>
@@ -1018,27 +1182,115 @@
     </div>
 
     <script>
-        // Updated Admin Password
         const ADMIN_PASS = "1234";
+        const PRINCIPAL_WHATSAPP_NUMBER = "93336910940"; 
+
         let isAdmin = false;
+
+        // --- Offline Encryption & Decryption Helpers (Base64 + UTF-8 Obfuscation) ---
+        function encryptData(obj) {
+            try {
+                const jsonStr = JSON.stringify(obj);
+                return btoa(encodeURIComponent(jsonStr));
+            } catch (e) {
+                return null;
+            }
+        }
+
+        function decryptData(encryptedStr) {
+            try {
+                const jsonStr = decodeURIComponent(atob(encryptedStr));
+                return JSON.parse(jsonStr);
+            } catch (e) {
+                return null;
+            }
+        }
+
+        // Crop Tool Variables
+        let cropImgElem = document.getElementById('cropImage');
+        let cropViewport = document.getElementById('cropViewport');
+        let zoomRange = document.getElementById('zoomRange');
+        let currentScale = 1;
+        let imgX = 0, imgY = 0;
+        let isDragging = false;
+        let startX = 0, startY = 0;
+        let originalImgObj = new Image();
+
+        // 3-Minute Session Lock Initialization & Watcher
+        function initSessionTimer() {
+            const SESSION_DURATION = 3 * 60 * 1000; // 3 minutes in milliseconds
+            let sessionStart = sessionStorage.getItem('cardSessionTime');
+            
+            const now = new Date().getTime();
+            if (!sessionStart) {
+                sessionStart = now;
+                sessionStorage.setItem('cardSessionTime', sessionStart);
+            } else {
+                if (now - parseInt(sessionStart) > SESSION_DURATION) {
+                    // Time elapsed exceeds 3 minutes - lock screen
+                    document.getElementById('sessionLockOverlay').classList.add('active');
+                    return;
+                }
+            }
+
+            // Periodically check remaining time
+            setInterval(() => {
+                const currentTime = new Date().getTime();
+                const startTime = parseInt(sessionStorage.getItem('cardSessionTime') || currentTime);
+                if (currentTime - startTime > SESSION_DURATION) {
+                    document.getElementById('sessionLockOverlay').classList.add('active');
+                }
+            }, 5000);
+        }
+
+        // Helper to retrieve storage data (Handles Encrypted LocalStorage)
+        function getStoredStudentData() {
+            const rawEncrypted = localStorage.getItem('studentDataEncrypted');
+            if (rawEncrypted) {
+                const decrypted = decryptData(rawEncrypted);
+                if (decrypted) return decrypted;
+            }
+
+            // Fallback check for unencrypted old data migration
+            const oldPlainData = localStorage.getItem('studentData');
+            if (oldPlainData) {
+                try {
+                    const parsed = JSON.parse(oldPlainData);
+                    localStorage.setItem('studentDataEncrypted', encryptData(parsed));
+                    localStorage.removeItem('studentData');
+                    return parsed;
+                } catch (e) {}
+            }
+
+            return null;
+        }
 
         // Load Data
         function loadData() {
+            initSessionTimer();
+
+            const defaultExpiry = new Date();
+            defaultExpiry.setMonth(defaultExpiry.getMonth() + 3);
+            const defaultExpiryStr = defaultExpiry.toISOString().split('T')[0];
+
             const defaultData = {
                 companyName: 'Company Name',
-                serialNo: 'SN-0001', 
+                serialNo: 'DAX-8821-BS', 
                 studentName: 'Full Name', 
                 bloodGroup: 'O+',
                 emergencyDialer: '', 
                 whatsappNo: '',
                 schoolAddress: 'پتہ درج کریں', 
                 schoolNo: '', 
-                validTill: 'December 2026',
+                expiryDate: defaultExpiryStr,
                 photo: '',
                 isVerified: false
             };
-            let data = JSON.parse(localStorage.getItem('studentData')) || defaultData;
-            if (!localStorage.getItem('studentData')) localStorage.setItem('studentData', JSON.stringify(data));
+
+            let data = getStoredStudentData() || defaultData;
+            if (!localStorage.getItem('studentDataEncrypted')) {
+                localStorage.setItem('studentDataEncrypted', encryptData(data));
+            }
 
             // Update UI
             document.querySelector('[data-field="companyName"]').innerText = data.companyName || 'Company Name';
@@ -1049,7 +1301,9 @@
             document.querySelector('[data-field="whatsappNo"]').innerText = data.whatsappNo || '0000-0000000';
             document.querySelector('[data-field="schoolAddress"]').innerText = data.schoolAddress;
             document.querySelector('[data-field="schoolNo"]').innerText = data.schoolNo || '0000-0000000';
-            document.querySelector('[data-field="validTill"]').innerText = data.validTill || 'December 2026';
+            document.querySelector('[data-field="expiryDateDisplay"]').innerText = data.expiryDate || defaultExpiryStr;
+
+            checkExpiryAlert(data.expiryDate || defaultExpiryStr);
 
             const avatarImg = document.getElementById('avatarImg');
             const avatarIcon = document.getElementById('avatarIcon');
@@ -1062,11 +1316,42 @@
                 avatarIcon.style.display = 'block';
             }
 
-            // Set Verification Badge Status
             updateBadgeUI(data.isVerified);
         }
 
-        // Helper to Toggle Badge UI Light State
+        // Send Renewal Request
+        function sendRenewalRequest() {
+            const data = getStoredStudentData() || {};
+            const targetPhone = PRINCIPAL_WHATSAPP_NUMBER.replace(/[^0-9]/g, '');
+            
+            const name = data.studentName || 'Student / Member';
+            const serial = data.serialNo || 'DAX-8821-BS';
+            const company = data.companyName || 'School / Organization';
+
+            const message = `Hello,\nI would like to request a renewal for my emergency card.\n\nName: ${name}\nSerial No: ${serial}\nInstitution: ${company}\n\nPlease update and renew my card. Thank you!`;
+
+            window.open(`https://wa.me/${targetPhone}?text=${encodeURIComponent(message)}`, '_blank');
+        }
+
+        // Expiry Alert Checker
+        function checkExpiryAlert(expiryStr) {
+            const alertBanner = document.getElementById('expiryAlertBanner');
+            const expiryTime = new Date(expiryStr).getTime();
+            const nowTime = new Date().getTime();
+            const diffDays = Math.ceil((expiryTime - nowTime) / (1000 * 60 * 60 * 24));
+
+            if (diffDays <= 10) {
+                alertBanner.style.display = 'block';
+                if (diffDays < 0) {
+                    alertBanner.innerHTML = `<i class="fas fa-triangle-exclamation"></i> Alert: This card has expired! Please renew your card.`;
+                } else {
+                    alertBanner.innerHTML = `<i class="fas fa-triangle-exclamation"></i> Alert: Only ${diffDays} days left before card expiry! Please renew.`;
+                }
+            } else {
+                alertBanner.style.display = 'none';
+            }
+        }
+
         function updateBadgeUI(isVerified) {
             const badge = document.getElementById('verifyBadge');
             const badgeText = document.getElementById('badgeText');
@@ -1094,7 +1379,6 @@
             if (document.getElementById('adminPass').value === ADMIN_PASS) {
                 isAdmin = true;
                 document.getElementById('loginModal').classList.remove('active');
-                document.getElementById('fabBtn').innerHTML = '<i class="fas fa-pen-to-square"></i>';
                 openEditModal();
             } else {
                 document.getElementById('loginError').style.display = 'block';
@@ -1102,17 +1386,17 @@
         }
 
         function openEditModal() {
-            const data = JSON.parse(localStorage.getItem('studentData'));
+            const data = getStoredStudentData() || {};
             
             document.getElementById('inputCompanyName').value = data.companyName === 'Company Name' ? '' : data.companyName;
-            document.getElementById('inputSerialNo').value = (data.serialNo === 'SN-0000' || data.serialNo === 'SN-0001') ? '' : data.serialNo;
+            document.getElementById('inputSerialNo').value = (data.serialNo === 'SN-0000' || data.serialNo === 'SN-0001' || data.serialNo === 'DAX-8821-BS') ? '' : data.serialNo;
             document.getElementById('inputStudentName').value = data.studentName === 'Full Name' ? '' : data.studentName;
             document.getElementById('inputBloodGroup').value = data.bloodGroup === 'O+' ? '' : data.bloodGroup;
             document.getElementById('inputEmergencyDialer').value = (data.emergencyDialer === '0000-0000000' || !data.emergencyDialer) ? '' : data.emergencyDialer;
             document.getElementById('inputWhatsappNo').value = (data.whatsappNo === '0000-0000000' || !data.whatsappNo) ? '' : data.whatsappNo;
             document.getElementById('inputSchoolAddress').value = data.schoolAddress === 'پتہ درج کریں' ? '' : data.schoolAddress;
             document.getElementById('inputSchoolNo').value = (data.schoolNo === '0000-0000000' || !data.schoolNo) ? '' : data.schoolNo;
-            document.getElementById('inputValidTill').value = data.validTill || '';
+            document.getElementById('inputExpiryDate').value = data.expiryDate || '';
 
             const preview = document.getElementById('imgPreview');
             const placeholder = document.getElementById('previewPlaceholder');
@@ -1128,61 +1412,151 @@
             document.getElementById('editModal').classList.add('active');
         }
 
-        // Modal Handlers
-        function openPrivacyModal() {
-            document.getElementById('privacyModal').classList.add('active');
-        }
+        function openBenefitsModal() { document.getElementById('benefitsModal').classList.add('active'); }
+        function openPrivacyModal() { document.getElementById('privacyModal').classList.add('active'); }
 
         function closeModals() {
             document.getElementById('loginModal').classList.remove('active');
             document.getElementById('editModal').classList.remove('active');
+            document.getElementById('benefitsModal').classList.remove('active');
             document.getElementById('privacyModal').classList.remove('active');
         }
 
-        // Photo Upload
+        function closeCropModal() {
+            document.getElementById('cropModal').classList.remove('active');
+        }
+
+        // --- Interactive Cropper Engine (Offline) ---
         document.getElementById('photoInput').addEventListener('change', function(e) {
             const file = e.target.files[0];
             if (file) {
                 const reader = new FileReader();
-                reader.onload = function(e) {
-                    localStorage.setItem('tempPhoto', e.target.result);
-                    document.getElementById('imgPreview').src = e.target.result;
-                    document.getElementById('imgPreview').style.display = 'block';
-                    document.getElementById('previewPlaceholder').style.display = 'none';
+                reader.onload = function(event) {
+                    originalImgObj.onload = function() {
+                        cropImgElem.src = originalImgObj.src;
+                        currentScale = 1;
+                        zoomRange.value = 1;
+                        
+                        // Center image initially inside viewport
+                        const vpWidth = 210, vpHeight = 260;
+                        let initWidth = vpWidth;
+                        let initHeight = (originalImgObj.height / originalImgObj.width) * vpWidth;
+                        if (initHeight < vpHeight) {
+                            initHeight = vpHeight;
+                            initWidth = (originalImgObj.width / originalImgObj.height) * vpHeight;
+                        }
+                        cropImgElem.style.width = initWidth + 'px';
+                        cropImgElem.style.height = initHeight + 'px';
+                        imgX = (vpWidth - initWidth) / 2;
+                        imgY = (vpHeight - initHeight) / 2;
+                        updateCropTransform();
+
+                        document.getElementById('cropModal').classList.add('active');
+                    }
+                    originalImgObj.src = event.target.result;
                 }
                 reader.readAsDataURL(file);
             }
         });
 
-        // Save Data with Auto Verification Timer
+        function updateCropTransform() {
+            cropImgElem.style.transform = `translate(${imgX}px, ${imgY}px) scale(${currentScale})`;
+        }
+
+        zoomRange.addEventListener('input', function() {
+            currentScale = parseFloat(this.value);
+            updateCropTransform();
+        });
+
+        // Touch & Mouse Drag Listeners for Cropper
+        cropViewport.addEventListener('mousedown', startDrag);
+        cropViewport.addEventListener('touchstart', startDrag, {passive: true});
+
+        window.addEventListener('mousemove', onDrag);
+        window.addEventListener('touchmove', onDrag, {passive: true});
+
+        window.addEventListener('mouseup', endDrag);
+        window.addEventListener('touchend', endDrag);
+
+        function startDrag(e) {
+            isDragging = true;
+            startX = (e.clientX || e.touches[0].clientX) - imgX;
+            startY = (e.clientY || e.touches[0].clientY) - imgY;
+        }
+
+        function onDrag(e) {
+            if (!isDragging) return;
+            const clientX = e.clientX || (e.touches ? e.touches[0].clientX : 0);
+            const clientY = e.clientY || (e.touches ? e.touches[0].clientY : 0);
+            imgX = clientX - startX;
+            imgY = clientY - startY;
+            updateCropTransform();
+        }
+
+        function endDrag() {
+            isDragging = false;
+        }
+
+        function applyCrop() {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+            
+            const targetW = 300;
+            const targetH = 400;
+            canvas.width = targetW;
+            canvas.height = targetH;
+
+            const vpRect = cropViewport.getBoundingClientRect();
+            const imgRect = cropImgElem.getBoundingClientRect();
+
+            const scaleX = originalImgObj.width / imgRect.width;
+            const scaleY = originalImgObj.height / imgRect.height;
+
+            const renderX = (vpRect.left - imgRect.left) * scaleX;
+            const renderY = (vpRect.top - imgRect.top) * scaleY;
+            const renderW = vpRect.width * scaleX;
+            const renderH = vpRect.height * scaleY;
+
+            ctx.drawImage(originalImgObj, renderX, renderY, renderW, renderH, 0, 0, targetW, targetH);
+            const croppedDataUrl = canvas.toDataURL('image/jpeg', 0.85);
+
+            localStorage.setItem('tempPhoto', croppedDataUrl);
+            document.getElementById('imgPreview').src = croppedDataUrl;
+            document.getElementById('imgPreview').style.display = 'block';
+            document.getElementById('previewPlaceholder').style.display = 'none';
+
+            closeCropModal();
+        }
+
+        // Save Data with Encrypted LocalStorage
         function saveData() {
             const nameVal = document.getElementById('inputStudentName').value.trim();
             const companyVal = document.getElementById('inputCompanyName').value.trim();
+            const currentData = getStoredStudentData() || {};
             
-            // Checking if form is filled or empty
             const isFilled = (nameVal !== '' && companyVal !== '');
 
             const data = {
                 companyName: companyVal || 'Company Name',
-                serialNo: document.getElementById('inputSerialNo').value || 'SN-0001',
+                serialNo: document.getElementById('inputSerialNo').value || 'DAX-8821-BS',
                 studentName: nameVal || 'Full Name',
                 bloodGroup: document.getElementById('inputBloodGroup').value || 'O+',
                 emergencyDialer: document.getElementById('inputEmergencyDialer').value || '0000-0000000',
                 whatsappNo: document.getElementById('inputWhatsappNo').value || '0000-0000000',
                 schoolAddress: document.getElementById('inputSchoolAddress').value || 'پتہ درج کریں',
                 schoolNo: document.getElementById('inputSchoolNo').value || '0000-0000000',
-                validTill: document.getElementById('inputValidTill').value || 'December 2026',
-                photo: localStorage.getItem('tempPhoto') || (JSON.parse(localStorage.getItem('studentData')).photo || ''),
-                isVerified: false // Reset initially during verification
+                expiryDate: document.getElementById('inputExpiryDate').value || currentData.expiryDate,
+                photo: localStorage.getItem('tempPhoto') || (currentData.photo || ''),
+                isVerified: false
             };
 
-            localStorage.setItem('studentData', JSON.stringify(data));
+            // Encrypt and save
+            localStorage.setItem('studentDataEncrypted', encryptData(data));
             localStorage.removeItem('tempPhoto');
 
             loadData();
             closeModals();
 
-            // If form was filled, start 5 Seconds Verification process
             if (isFilled) {
                 const banner = document.getElementById('verifyingBanner');
                 banner.style.display = 'block';
@@ -1191,37 +1565,36 @@
                 setTimeout(() => {
                     banner.style.display = 'none';
                     data.isVerified = true;
-                    localStorage.setItem('studentData', JSON.stringify(data));
+                    localStorage.setItem('studentDataEncrypted', encryptData(data));
                     updateBadgeUI(true);
                 }, 5000);
             } else {
-                // If empty form saved, keep light OFF
                 updateBadgeUI(false);
             }
         }
 
         // Action Buttons
         function makeCall() {
-            const data = JSON.parse(localStorage.getItem('studentData'));
+            const data = getStoredStudentData() || {};
             window.location.href = `tel:${data.emergencyDialer}`;
         }
 
         function sendWhatsApp() {
-            const data = JSON.parse(localStorage.getItem('studentData'));
-            const phone = data.whatsappNo.replace(/[^0-9]/g, '');
+            const data = getStoredStudentData() || {};
+            const phone = (data.whatsappNo || '').replace(/[^0-9]/g, '');
             window.open(`https://wa.me/${phone}`, '_blank');
         }
 
         function sendLocation() {
-            const data = JSON.parse(localStorage.getItem('studentData'));
-            const phone = data.whatsappNo.replace(/[^0-9]/g, '');
+            const data = getStoredStudentData() || {};
+            const phone = (data.whatsappNo || '').replace(/[^0-9]/g, '');
             
             if (navigator.geolocation) {
                 navigator.geolocation.getCurrentPosition(position => {
                     const lat = position.coords.latitude;
                     const lon = position.coords.longitude;
                     const mapsLink = `https://maps.google.com/?q=${lat},${lon}`;
-                    const message = `ہنگامی حالت! موجودہ لوکیشن: ${mapsLink}`;
+                    const message = `Emergency! Current Location: ${mapsLink}`;
                     window.open(`https://wa.me/${phone}?text=${encodeURIComponent(message)}`, '_blank');
                 }, () => {
                     alert("لوکیشن حاصل نہیں ہو سکی۔ براہ کرم GPS آن کریں۔");
@@ -1234,7 +1607,7 @@
         // Initialize App
         loadData();
 
-        // Inline Service Worker & PWA Support
+        // Inline Service Worker & PWA Support (100% Offline Ready)
         (function initPWA() {
             const manifestData = {
                 name: "Data-Axe Emergency Card",
@@ -1252,7 +1625,7 @@
 
             if ('serviceWorker' in navigator) {
                 const swCode = `
-                    const CACHE_NAME = 'data-axe-card-v2';
+                    const CACHE_NAME = 'data-axe-card-v14';
                     self.addEventListener('install', (e) => { self.skipWaiting(); });
                     self.addEventListener('activate', (e) => { e.waitUntil(self.clients.claim()); });
                     self.addEventListener('fetch', (e) => {
