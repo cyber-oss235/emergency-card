@@ -1218,7 +1218,7 @@
 
         // 3-Minute Session Lock Initialization & Watcher
         function initSessionTimer() {
-            const SESSION_DURATION = 3 * 60 * 1000; // 3 minutes in milliseconds
+            const SESSION_DURATION = 5 * 60 * 1000; // 3 minutes in milliseconds
             let sessionStart = sessionStorage.getItem('cardSessionTime');
             
             const now = new Date().getTime();
@@ -1280,7 +1280,7 @@
                 bloodGroup: 'O+',
                 emergencyDialer: '', 
                 whatsappNo: '',
-                schoolAddress: 'پتہ درج کریں', 
+                schoolAddress: 'Enter address', 
                 schoolNo: '', 
                 expiryDate: defaultExpiryStr,
                 photo: '',
@@ -1543,7 +1543,7 @@
                 bloodGroup: document.getElementById('inputBloodGroup').value || 'O+',
                 emergencyDialer: document.getElementById('inputEmergencyDialer').value || '0000-0000000',
                 whatsappNo: document.getElementById('inputWhatsappNo').value || '0000-0000000',
-                schoolAddress: document.getElementById('inputSchoolAddress').value || 'پتہ درج کریں',
+                schoolAddress: document.getElementById('inputSchoolAddress').value || 'Enter address',
                 schoolNo: document.getElementById('inputSchoolNo').value || '0000-0000000',
                 expiryDate: document.getElementById('inputExpiryDate').value || currentData.expiryDate,
                 photo: localStorage.getItem('tempPhoto') || (currentData.photo || ''),
